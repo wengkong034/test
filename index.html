@@ -714,15 +714,15 @@
         });
       }
       
-      function createVehicleIcon() {
+        function createVehicleIcon() {
         return L.divIcon({
-          html: '<i class="fa-solid fa-truck" style="color: green; font-size: 28px;"></i>',
-          className: 'custom-depot-icon',
-          iconSize: [30, 30],
-          iconAnchor: [15, 15],
-          popupAnchor: [0, -15]
+            html: '<div id="truck-icon"><i class="fa-solid fa-truck" style="color: green; font-size: 28px;"></i></div>',
+            className: 'custom-depot-icon',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15],
+            popupAnchor: [0, -15]
         });
-      }
+        }
 
       // Follow Depot toggle
       const followBtn = document.getElementById("followBtn");
@@ -789,21 +789,21 @@
         function handleOrientation(event) {
         let heading;
 
-        if (event.absolute && event.alpha !== null) {
-            // alpha = compass direction (0° = North)
-            heading = 360 - event.alpha; 
-        } else if (event.webkitCompassHeading !== undefined) {
+        if (event.webkitCompassHeading !== undefined) {
             // iOS Safari
             heading = event.webkitCompassHeading;
+        } else if (event.absolute && event.alpha !== null) {
+            // Android Chrome
+            heading = 360 - event.alpha; // invert so 0° = North
         } else {
             console.log("⚠️ Compass not supported on this device");
             return;
         }
 
-        // Apply rotation
         const truckIcon = document.getElementById("truck-icon");
         if (truckIcon) {
             truckIcon.style.transform = `rotate(${heading}deg)`;
+            truckIcon.style.transition = "transform 0.2s linear"; // smooth rotation
         }
         }
 
